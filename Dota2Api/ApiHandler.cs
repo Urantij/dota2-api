@@ -145,11 +145,15 @@ namespace Dota2Api
             }
         }
 
-        public async Task<HeroResult> GetHeroes()
+        /// <param name="language">https://dev.dota2.com/forum/dota-2/spectating/replays/webapi/60177-things-you-should-know-before-starting</param>
+        /// <returns></returns>
+        public async Task<HeroResult> GetHeroes(string language = "en_us")
         {
             try
             {
-                string queryString = QueryBuilder(BASE_ADDRESS, "IEconDOTA2_570/GetHeroes/v0001/", KeyString);
+                language = language != null ? $"&language={language}" : "";
+
+                string queryString = QueryBuilder(BASE_ADDRESS, "IEconDOTA2_570/GetHeroes/v1/", KeyString, language);
                 string content = await GetStringAsync(queryString);
                 var apiResult = JsonConvert.DeserializeObject<ApiResult<HeroResult>>(content);
                 return apiResult.Result;
@@ -159,6 +163,7 @@ namespace Dota2Api
                 throw;
             }
         }
+
         /// <summary>
         /// 
         /// </summary>
